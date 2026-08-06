@@ -250,3 +250,144 @@ Character → Frequency
 - 205. Isomorphic Strings
 - 389. Find the Difference
 - 451. Sort Characters By Frequency
+ 
+## Observation
+
+Two strings are anagrams if:
+
+- Both have the same length.
+- Every character appears the same number of times.
+
+---
+
+## Algorithm
+
+1. Check if lengths are different.
+   - If yes, return `false`.
+
+2. Create two HashMaps.
+
+3. Traverse the first string.
+   - Count frequency of every character.
+
+4. Traverse the second string.
+   - Count frequency of every character.
+
+5. Compare both HashMaps.
+   - If equal → `true`
+   - Else → `false`
+
+---
+
+## Java Syntax to Remember
+
+### String Length
+
+```java
+s.length();
+```
+
+---
+
+### Access Character at Index
+
+```java
+char ch = s.charAt(i);
+```
+
+Example:
+
+```java
+String s = "hello";
+
+char ch = s.charAt(1);   // 'e'
+```
+
+---
+
+### HashMap Frequency Count
+
+```java
+if (map.containsKey(ch)) {
+    map.put(ch, map.get(ch) + 1);
+} else {
+    map.put(ch, 1);
+}
+```
+
+---
+
+### Compare Two HashMaps
+
+```java
+return map1.equals(map2);
+```
+
+---
+
+## Complexity
+
+Time: **O(n)**
+
+Space: **O(n)**
+
+---
+
+## Things to Remember
+
+✅ Length check first.
+
+✅ HashMap Key = Character
+
+✅ HashMap Value = Frequency
+
+✅ Character access:
+
+```java
+char ch = s.charAt(i);
+```
+
+✅ Frequency Update:
+
+```java
+map.put(ch, map.get(ch) + 1);
+```
+
+✅ Compare using:
+
+```java
+map1.equals(map2);
+```
+
+---
+
+## Mistakes I Made
+
+- Forgot to use `Character` as HashMap key.
+- Forgot the length check.
+- Forgot string-to-character syntax:
+
+```java
+char ch = s.charAt(i);
+```
+
+- Remember:
+
+```text
+String
+
+↓
+
+charAt(i)
+
+↓
+
+Character
+
+↓
+
+Update Frequency
+
+↓
+
+Compare Maps
