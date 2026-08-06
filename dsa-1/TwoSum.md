@@ -148,9 +148,4 @@ Space: **O(n)**
 
 ---
 
-## Similar Problems
 
-- 217. Contains Duplicate
-- 219. Contains Duplicate II
-- 1. Two Sum II (Sorted Array → Two Pointers)
-- 560. Subarray Sum Equals K
