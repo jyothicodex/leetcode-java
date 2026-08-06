@@ -1,122 +1,234 @@
-HashMap Basics
-1. Create
+# Java HashMap & HashSet Cheat Sheet (DSA)
+
+## HashMap
+
+### 1. Create
+
+```java
 HashMap<Integer, Integer> map = new HashMap<>();
-
-or
-
 HashMap<Character, Integer> map = new HashMap<>();
-
-or
-
 HashMap<String, List<String>> map = new HashMap<>();
-2. Put (Insert)
+```
+
+---
+
+### 2. Insert
+
+```java
 map.put(key, value);
+```
 
-Example
+Example:
 
+```java
 map.put(2, 0);
+```
 
-Map
+---
 
-{2=0}
-3. Get Value
+### 3. Get Value
+
+```java
 map.get(key);
+```
 
-Example
+Example:
 
+```java
 map.get(2);
+```
 
-Output
+---
 
-0
-4. Check if Key Exists
-map.containsKey(key)
+### 4. Check Key Exists
 
-Example
+```java
+map.containsKey(key);
+```
 
-if(map.containsKey(7))
+Example:
 
-Used in:
-
-Two Sum
-Group Anagrams
-Frequency Map
-5. Update Frequency
-if(map.containsKey(ch)){
-    map.put(ch, map.get(ch)+1);
+```java
+if (map.containsKey(7)) {
+    // do something
 }
-else{
-    map.put(ch,1);
+```
+
+---
+
+### 5. Update Frequency
+
+```java
+if (map.containsKey(ch)) {
+    map.put(ch, map.get(ch) + 1);
+} else {
+    map.put(ch, 1);
 }
+```
 
-Shortcut (remember later)
+Shortcut:
 
-map.put(ch, map.getOrDefault(ch,0)+1);
-6. Remove
+```java
+map.put(ch, map.getOrDefault(ch, 0) + 1);
+```
+
+---
+
+### 6. Remove
+
+```java
 map.remove(key);
-7. Size
+```
+
+---
+
+### 7. Size
+
+```java
 map.size();
-8. Compare Maps
+```
+
+---
+
+### 8. Compare Two Maps
+
+```java
 map1.equals(map2);
+```
 
 Used in:
+- Valid Anagram
 
-Valid Anagram
-9. Get All Values
+---
+
+### 9. Get All Values
+
+```java
 map.values();
+```
 
 Used in:
+- Group Anagrams
 
-Group Anagrams
-10. Get All Keys
+---
+
+### 10. Get All Keys
+
+```java
 map.keySet();
-HashSet Basics
-1. Create
+```
+
+---
+
+# HashSet
+
+### 1. Create
+
+```java
 HashSet<Integer> set = new HashSet<>();
-2. Add
-set.add(5);
-3. Contains
-set.contains(5);
-4. Remove
-set.remove(5);
-5. Size
+```
+
+---
+
+### 2. Add
+
+```java
+set.add(num);
+```
+
+---
+
+### 3. Check Exists
+
+```java
+set.contains(num);
+```
+
+---
+
+### 4. Remove
+
+```java
+set.remove(num);
+```
+
+---
+
+### 5. Size
+
+```java
 set.size();
-Interview Patterns
-Two Sum
-if(map.containsKey(target - nums[i])){
-    return new int[]{map.get(target-nums[i]), i};
+```
+
+---
+
+# Common Interview Patterns
+
+## Two Sum
+
+```java
+if (map.containsKey(target - nums[i])) {
+    return new int[]{map.get(target - nums[i]), i};
 }
 
 map.put(nums[i], i);
-Contains Duplicate
-if(set.contains(num)){
+```
+
+---
+
+## Contains Duplicate
+
+```java
+if (set.contains(num)) {
     return true;
 }
 
 set.add(num);
-Frequency Map
-if(map.containsKey(ch)){
-    map.put(ch, map.get(ch)+1);
+```
+
+---
+
+## Frequency Map
+
+```java
+if (map.containsKey(ch)) {
+    map.put(ch, map.get(ch) + 1);
+} else {
+    map.put(ch, 1);
 }
-else{
-    map.put(ch,1);
-}
-Group Anagrams
-if(!map.containsKey(key)){
+```
+
+or
+
+```java
+map.put(ch, map.getOrDefault(ch, 0) + 1);
+```
+
+---
+
+## Group Anagrams
+
+```java
+if (!map.containsKey(key)) {
     map.put(key, new ArrayList<>());
 }
 
 map.get(key).add(str);
-The 8 methods you should memorize
-Method	Purpose
-put()	Insert key-value
-get()	Get value
-containsKey()	Check key exists
-contains() (HashSet)	Check element exists
-add() (HashSet)	Insert element
-remove()	Delete
-values()	Get all values
-equals()	Compare two maps
-My suggestion
+```
 
-Make one notebook page titled "Java DSA Cheat Sheet" and write only these methods. Before solving any HashMap/HashSet problem (Two Sum, Group Anagrams, Valid Anagram, Contains Duplicate, Top K Frequent, etc.), spend 2 minutes revising this page. After a week, you'll stop thinking about syntax and can focus on the algorithm instead.
+---
+
+# Must Remember
+
+| Method | Purpose |
+|---------|---------|
+| `put()` | Insert key-value pair |
+| `get()` | Get value using key |
+| `containsKey()` | Check key exists |
+| `add()` | Add element to HashSet |
+| `contains()` | Check element in HashSet |
+| `remove()` | Remove key/element |
+| `values()` | Get all values |
+| `keySet()` | Get all keys |
+| `equals()` | Compare two HashMaps |
+| `getOrDefault()` | Frequency counting shortcut |
