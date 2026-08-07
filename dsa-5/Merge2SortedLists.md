@@ -2,160 +2,70 @@
 
 ## 📌 Problem Statement
 
-You are given the heads of two sorted linked lists `list1` and `list2`.
+Given the heads of two sorted linked lists `list1` and `list2`, merge them into one sorted linked list and return the head of the merged list.
 
-Merge the two lists into one sorted linked list and return the head of the merged linked list.
+---
+
+# 🧠 Pattern
+
+**Dummy Node Pattern**
+
+Whenever a question asks to:
+- Merge linked lists
+- Build a new linked list
+- Insert nodes one by one
+
+👉 Think **Dummy Node + Current Pointer**
 
 ---
 
 # 💡 Intuition
 
-Since both linked lists are already sorted, compare the current nodes of both lists and attach the smaller node to the answer. A **Dummy Node** helps build the merged list without handling special cases for the head.
+Since both linked lists are already sorted, compare the current node of each list and attach the smaller node to the merged list.
 
----
-
-# 🧩 Pattern
-
-**Dummy Node Pattern**
-
-Use this pattern whenever you need to:
-
-- Merge linked lists
-- Build a new linked list
-- Insert nodes sequentially
-
----
-
-# 🛠️ What are we using?
-
-### 1. Dummy Node
-
-A temporary node that acts as the starting point of the merged list.
-
-```java
-ListNode dummy = new ListNode(-1);
-```
-
-### 2. Current Pointer
-
-Used to build the merged linked list.
-
-```java
-ListNode curr = dummy;
-```
+A **Dummy Node** helps avoid handling the head node separately.
 
 ---
 
 # 📋 Algorithm
 
 1. Create a dummy node.
-2. Create a `curr` pointer pointing to the dummy node.
+2. Point `curr` to the dummy node.
 3. Traverse both linked lists until one becomes `null`.
-4. Compare the current nodes of both lists.
+4. Compare `list1.val` and `list2.val`.
 5. Attach the smaller node to `curr.next`.
 6. Move the corresponding list pointer.
-7. Move `curr` forward.
+7. Move `curr` to the next node.
 8. Attach the remaining nodes of the non-empty list.
 9. Return `dummy.next`.
 
 ---
 
-# 🎨 Dry Run
-
-### Input
+# 📝 Pseudocode
 
 ```text
-list1 = 1 → 2 → 4
+1. Create dummy node.
 
-list2 = 1 → 3 → 4
-```
+2. curr = dummy
 
-### Initially
+3. While(list1 != null && list2 != null)
 
-```text
-dummy(-1)
-   |
- curr
+      if(list1.val <= list2.val)
+          curr.next = list1
+          list1 = list1.next
+      else
+          curr.next = list2
+          list2 = list2.next
 
-list1 → 1 → 2 → 4
+      curr = curr.next
 
-list2 → 1 → 3 → 4
-```
+4. If(list1 != null)
+       curr.next = list1
 
----
+5. Else
+       curr.next = list2
 
-### Compare 1 and 1
-
-Take list1.
-
-```text
-dummy → 1
-          ↑
-        curr
-```
-
----
-
-### Compare 2 and 1
-
-Take list2.
-
-```text
-dummy → 1 → 1
-              ↑
-            curr
-```
-
----
-
-### Compare 2 and 3
-
-Take list1.
-
-```text
-dummy → 1 → 1 → 2
-                  ↑
-                curr
-```
-
----
-
-### Compare 4 and 3
-
-Take list2.
-
-```text
-dummy → 1 → 1 → 2 → 3
-                      ↑
-                    curr
-```
-
----
-
-### Compare 4 and 4
-
-Take list1.
-
-```text
-dummy → 1 → 1 → 2 → 3 → 4
-                          ↑
-                        curr
-```
-
----
-
-### list1 becomes null
-
-Attach remaining list2.
-
-```text
-dummy → 1 → 1 → 2 → 3 → 4 → 4
-```
-
-Return
-
-```text
-dummy.next
+6. Return dummy.next
 ```
 
 ---
@@ -199,7 +109,7 @@ class Solution {
 
 ### Time Complexity
 
-```text
+```
 O(n + m)
 ```
 
@@ -208,23 +118,19 @@ O(n + m)
 
 Each node is visited exactly once.
 
----
-
 ### Space Complexity
 
-```text
+```
 O(1)
 ```
 
-No extra linked list is created.
+Only pointers are used.
 
 ---
 
-# ❌ Common Mistakes
+# ❌ Mistakes to Avoid
 
-### 1. Using `while` instead of `if`
-
-❌ Wrong
+### ❌ Mistake 1 (Time Limit Exceeded)
 
 ```java
 while(list1 != null){
@@ -232,27 +138,66 @@ while(list1 != null){
 }
 ```
 
-This causes an infinite loop.
+or
 
-✅ Correct
+```java
+while(list2 != null){
+    curr.next = list2;
+}
+```
+
+### Why is it wrong?
+
+Inside the loop, neither `list1` nor `list2` is moved.
+
+Example:
+
+```java
+while(list1 != null){
+    curr.next = list1;
+}
+```
+
+`list1` always points to the same node.
+
+Condition:
+
+```text
+list1 != null
+```
+
+is always true.
+
+➡️ Infinite Loop
+
+➡️ Time Limit Exceeded (TLE)
+
+---
+
+### ✅ Correct
 
 ```java
 if(list1 != null){
     curr.next = list1;
 }
+else{
+    curr.next = list2;
+}
 ```
+
+We simply attach the remaining linked list because it is already sorted.
 
 ---
 
-### 2. Returning the dummy node
+### ❌ Mistake 2
 
-❌ Wrong
+Returning
 
 ```java
 return dummy;
 ```
 
-✅ Correct
+### ✅ Correct
 
 ```java
 return dummy.next;
@@ -260,15 +205,15 @@ return dummy.next;
 
 ---
 
-### 3. Forgetting to move `curr`
+### ❌ Mistake 3
 
-Always write
+Forgetting
 
 ```java
 curr = curr.next;
 ```
 
-after attaching a node.
+The merged list will not grow correctly.
 
 ---
 
@@ -296,42 +241,22 @@ Return dummy.next
 
 # 🎤 Interview Explanation
 
-> I create a dummy node to simplify handling the head of the merged list. A `curr` pointer starts from the dummy node. While both lists have nodes, I compare their current values, attach the smaller node, move the corresponding list pointer, and then move `curr`. After one list becomes empty, I attach the remaining nodes of the other list. Finally, I return `dummy.next`, which is the head of the merged linked list.
+> I create a dummy node to simplify handling the head of the merged list. A current pointer starts from the dummy node. While both linked lists contain nodes, I compare their current values and attach the smaller node to the merged list. Then I move the corresponding list pointer and the current pointer. After one list becomes empty, I attach the remaining nodes of the other list directly and finally return `dummy.next`.
 
 ---
 
-# 📚 Similar Problems
+# ⭐ Quick Revision
 
-- LeetCode 2 – Add Two Numbers
-- LeetCode 23 – Merge K Sorted Lists
-- LeetCode 24 – Swap Nodes in Pairs
-- LeetCode 86 – Partition List
-- LeetCode 92 – Reverse Linked List II
+- Pattern → Dummy Node Pattern
+- Create `dummy`
+- Create `curr`
+- Compare both nodes
+- Attach smaller node
+- Move corresponding list pointer
+- Move `curr`
+- Attach remaining list
+- Return `dummy.next`
 
----
+**Time:** `O(n + m)`
 
-# ⚡ Quick Revision
-
-- ✅ Pattern → Dummy Node Pattern
-- ✅ Create `dummy` and `curr`
-- ✅ Compare both lists
-- ✅ Attach smaller node
-- ✅ Move corresponding list pointer
-- ✅ Move `curr`
-- ✅ Attach remaining list
-- ✅ Return `dummy.next`
-
-**Time Complexity:** `O(n + m)`
-
-**Space Complexity:** `O(1)`
-
----
-
-# ⭐ Key Takeaways
-
-- Use the **Dummy Node Pattern** to simplify linked list construction.
-- Always compare the current nodes of both lists.
-- Attach the smaller node and move the corresponding pointer.
-- Move `curr` after every attachment.
-- Attach the remaining list after the loop.
-- Return `dummy.next`, not `dummy`.
+**Space:** `O(1)`
