@@ -1,30 +1,14 @@
-important from Day 2.
-
-# 🔢 Bit Manipulation — Day 2: AND & Check Bit
+# 🔢 Bit Manipulation — Day 2: Check Bit
 
 ## 📌 Goal
 
-Learn `&` (AND), masks, and how to check whether the `i-th` bit is SET or NOT SET.
+Learn how to check whether the `i`th bit is **SET (1)** or **NOT SET (0)**.
 
 ---
 
-# 1. 🧩 AND Operator `&`
-
-AND gives `1` only when **both bits are `1`**.
+# 1. 🧠 SET vs NOT SET
 
 ```text
-0 & 0 = 0
-0 & 1 = 0
-1 & 0 = 0
-1 & 1 = 1
-
-Example:
-
-  1011
-& 0110
-------
-  0010
-2. 📍 SET and NOT SET
 1 → SET
 0 → NOT SET
 
@@ -37,17 +21,28 @@ Bit:       1  1  0  1
 
 So:
 
-Bit 3 → SET
-Bit 2 → SET
-Bit 1 → NOT SET
-Bit 0 → SET
+bit 3 → SET
+bit 2 → SET
+bit 1 → NOT SET
+bit 0 → SET
+2. 🔹 AND &
+
+AND gives 1 only when both bits are 1.
+
+0 & 0 = 0
+0 & 1 = 0
+1 & 0 = 0
+1 & 1 = 1
+
+Think:
+
+1 & 1 → 1
+anything else → 0
 3. 🎯 Mask
 
-A mask is used to target a particular bit.
+To check position i, we need a mask.
 
-To create a mask for position i:
-
-1 << i
+Mask = 1 << i
 
 Remember:
 
@@ -58,7 +53,6 @@ Example:
 i = 2
 
 1 << 2
-= 2²
 = 4
 = 0100
 
@@ -67,17 +61,25 @@ The 1 is at position 2.
 Position:  3  2  1  0
 Mask:      0  1  0  0
                ↑
-4. ✅ Check if i-th Bit is SET
+             check
+4. ⭐ Check ith Bit
 
 Formula:
 
 n & (1 << i)
-Example
+
+Meaning:
+
+n
+&
+mask
+↓
+check only bit i
+5. 🔍 Example — NOT SET
 n = 9
 i = 2
-
-9 = 1001
-1 << 2 = 0100
+9  = 1001
+mask = 0100
 
 AND:
 
@@ -86,35 +88,40 @@ AND:
 ------
   0000
 
-Result is 0.
-
-Therefore:
-
-Bit 2 → NOT SET
-5. ⭐ SET Example
-n = 10
-i = 3
-
-10 = 1010
-1 << 3 = 1000
-  1010
-& 1000
-------
-  1000
-
-Result is non-zero.
-
-Therefore:
-
-Bit 3 → SET
-6. 🧠 Main Rule
-n & (1 << i)
 Result = 0
-→ Bit i is NOT SET
+
+Therefore:
+
+bit 2 → NOT SET
+6. 🔍 Example — SET
+n = 13
+i = 2
+13 = 1101
+mask = 0100
+  1101
+& 0100
+------
+  0100
 
 Result ≠ 0
-→ Bit i is SET
-7. 💻 Java Code
+
+Therefore:
+
+bit 2 → SET
+🧠 Remember This
+Need to check bit i
+        ↓
+Create mask
+        ↓
+1 << i
+        ↓
+AND with n
+        ↓
+n & (1 << i)
+        ↓
+0       → NOT SET
+non-zero → SET
+💻 Java
 int n = 9;
 int i = 2;
 
@@ -123,32 +130,32 @@ if ((n & (1 << i)) != 0) {
 } else {
     System.out.println("NOT SET");
 }
-
-Output:
-
-NOT SET
 🔗 Day 1 → Day 2
-Bit position i
-      ↓
-Value = 2ⁱ
-      ↓
+DAY 1
+bit position
+     ↓
+2ⁱ
+     ↓
 1 << i
-      ↓
-Mask
-      ↓
-AND (&)
-      ↓
-Check i-th bit
-⭐ Day 2 Key Takeaways
-1. & → AND
-2. 1 << i → creates mask
-3. 1 << i = 2ⁱ
-4. SET = 1
-5. NOT SET = 0
-6. Check bit → n & (1 << i)
-7. Result 0 → NOT SET
-8. Result non-zero → SET
-🚀 Next — Day 3
-SET BIT
-CLEAR BIT
-TOGGLE BIT
+     ↓
+MASK
+
+DAY 2
+MASK
+ ↓
+&
+ ↓
+CHECK BIT
+ ↓
+SET / NOT SET
+⭐ Day 2 Key Points
+1 → SET
+0 → NOT SET
+& → AND
+1 << i → creates mask for position i
+n & (1 << i) → checks bit i
+0 → NOT SET
+non-zero → SET
+🏁 Status
+
+Day 2 — Check Bit ✅
