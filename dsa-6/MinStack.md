@@ -192,13 +192,13 @@ Instead of finding the minimum every time, maintain the minimum while pushing el
 
 ## Similar Questions
 
-- Valid Parentheses
-- Implement Queue using Stacks
-- Implement Stack using Queues
-- Next Greater Element
-- Daily Temperatures
-- Asteroid Collision
-- Design a Stack With Increment Operation
+Min Stack #155 ✅
+        ↓
+Design a Stack With Increment Operation #1381
+        ↓
+Maximum Frequency Stack #895
+        ↓
+Max Stack #716
 
 ---
 
