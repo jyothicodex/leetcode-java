@@ -212,3 +212,14 @@ Max Stack #716
     pop()      → Pop from both stacks
 
 **Main Idea:** Maintain extra information while processing instead of calculating it again later.
+## Code-Building Logic 🧠
+## Opening bracket → push
+
+Closing bracket →
+    Stack empty → return false
+    Matching top → pop
+    Not matching → return false
+
+After loop →
+    Stack empty → true
+    Otherwise → false
