@@ -1,166 +1,317 @@
 # Get Max from Stack — Special Stack
-https://www.geeksforgeeks.org/problems/get-max-from-stack/1
+
+🔗 [GeeksForGeeks — Get Max from Stack](https://www.geeksforgeeks.org/problems/get-max-from-stack/1)
+
+---
 
 ## 1. Problem in Simple Words
-Design a stack that supports `push`, `pop`, `peek`, `isEmpty`, and `getMax()`.
 
-The important requirement is that `getMax()` must return the maximum element in **O(1)** time.
+Design a stack that supports:
+
+- `push(x)` → insert an element
+- `pop()` → remove the top element
+- `peek()` → return the top element
+- `isEmpty()` → check whether the stack is empty
+- `getMax()` → return the maximum element in **O(1)**
+
+---
 
 ## 2. Main Challenge
-A normal stack can get the top element in O(1), but finding the maximum by scanning all elements takes O(n).
 
-We need extra information so the maximum can also be retrieved in O(1).
+A normal stack can return the top element in O(1), but finding the maximum requires checking all elements.
+
+So:
+
+**Normal `getMax()` → O(n)**
+
+We need:
+
+**`getMax()` → O(1)**
+
+---
 
 ## 3. Brute Force Approach
-Use one normal stack and scan the entire stack whenever `getMax()` is called.
+
+Use one normal stack.
+
+For `getMax()`:
+
+1. Traverse all elements.
+2. Keep track of the largest element.
+3. Return the maximum.
+
+### Complexity
 
 - `push()` → O(1)
 - `pop()` → O(1)
 - `peek()` → O(1)
 - `getMax()` → O(n)
 
+---
+
 ## 4. Optimal Approach / Intuition
+
 Use **two stacks**:
 
-- `stack` → stores actual elements.
-- `specialStack` → stores the maximum value at every stack level.
+- `stack` → stores actual values
+- `specialStack` → stores the maximum at every level
 
-Example:
+### Example
 
-```text
-stack:        [2, 3, 1]
-specialStack: [2, 3, 3]
+After:
 
-Therefore, specialStack.peek() always gives the current maximum in O(1).
+`push(2) → push(3) → push(1)`
 
-5. Algorithm
-Push x into stack.
-If specialStack is empty, push x.
-Otherwise compare x with the current maximum.
-If x is smaller, push the current maximum again.
-Otherwise push x because it becomes the new maximum.
-For pop(), pop from both stacks.
-peek() returns the top of stack.
-getMax() returns the top of specialStack.
-Handle empty stack cases by returning -1 for peek() and getMax().
-6. Pseudocode
-push(x):
-    stack.push(x)
+`stack` → `[2, 3, 1]`
 
-    if specialStack is empty:
-        specialStack.push(x)
-    else if x < specialStack.peek():
-        specialStack.push(specialStack.peek())
-    else:
-        specialStack.push(x)
+`specialStack` → `[2, 3, 3]`
 
-pop():
-    stack.pop()
-    specialStack.pop()
+Why?
 
-peek():
-    if stack is empty:
-        return -1
-    return stack.peek()
+- After `2` → maximum = `2`
+- After `3` → maximum = `3`
+- After `1` → maximum is still `3`
 
-getMax():
-    if specialStack is empty:
-        return -1
-    return specialStack.peek()
+Therefore:
 
-isEmpty():
-    return stack.isEmpty()
+`specialStack.peek()` = current maximum
+
+So `getMax()` works in **O(1)**.
+
+---
+
+## 5. Algorithm
+
+### Push
+
+1. Push `x` into `stack`.
+2. If `specialStack` is empty, push `x` into `specialStack`.
+3. Otherwise, check the current maximum using `specialStack.peek()`.
+4. If `x` is smaller than the current maximum, push the current maximum again.
+5. Otherwise, push `x` because it becomes the new maximum.
+
+### Pop
+
+1. Pop from `stack`.
+2. Pop from `specialStack`.
+
+Both stacks stay synchronized.
+
+### Peek
+
+1. If `stack` is empty, return `-1`.
+2. Otherwise, return `stack.peek()`.
+
+### Get Max
+
+1. If `specialStack` is empty, return `-1`.
+2. Otherwise, return `specialStack.peek()`.
+
+### Is Empty
+
+1. Return `stack.isEmpty()`.
+
+---
+
+## 6. Pseudocode
+
+### `push(x)`
+
+1. `stack.push(x)`
+2. If `specialStack` is empty:
+   - `specialStack.push(x)`
+3. Otherwise:
+   - `currentMax = specialStack.peek()`
+   - If `x < currentMax`:
+     - `specialStack.push(currentMax)`
+   - Else:
+     - `specialStack.push(x)`
+
+### `pop()`
+
+1. `stack.pop()`
+2. `specialStack.pop()`
+
+### `peek()`
+
+1. If stack is empty → return `-1`
+2. Otherwise → return `stack.peek()`
+
+### `getMax()`
+
+1. If special stack is empty → return `-1`
+2. Otherwise → return `specialStack.peek()`
+
+### `isEmpty()`
+
+1. Return `stack.isEmpty()`
+
+---
 
 ## 7. Java Code
 
-```java
-import java.util.Stack;
+    import java.util.Stack;
 
-class SpecialStack {
-    Stack<Integer> stack;
-    Stack<Integer> specialStack;
+    class SpecialStack {
+        Stack<Integer> stack;
+        Stack<Integer> specialStack;
 
-    public SpecialStack() {
-        stack = new Stack<>();
-        specialStack = new Stack<>();
-    }
+        public SpecialStack() {
+            stack = new Stack<>();
+            specialStack = new Stack<>();
+        }
 
-    public void push(int x) {
-        stack.push(x);
+        public void push(int x) {
+            stack.push(x);
 
-        if (specialStack.isEmpty()) {
-            specialStack.push(x);
-        } else if (x < specialStack.peek()) {
-            specialStack.push(specialStack.peek());
-        } else {
-            specialStack.push(x);
+            if (specialStack.isEmpty()) {
+                specialStack.push(x);
+            } else if (x < specialStack.peek()) {
+                specialStack.push(specialStack.peek());
+            } else {
+                specialStack.push(x);
+            }
+        }
+
+        public void pop() {
+            stack.pop();
+            specialStack.pop();
+        }
+
+        public int peek() {
+            if (stack.isEmpty()) {
+                return -1;
+            }
+
+            return stack.peek();
+        }
+
+        boolean isEmpty() {
+            return stack.isEmpty();
+        }
+
+        public int getMax() {
+            if (specialStack.isEmpty()) {
+                return -1;
+            }
+
+            return specialStack.peek();
         }
     }
 
-    public void pop() {
-        stack.pop();
-        specialStack.pop();
-    }
+---
 
-    public int peek() {
-        if (stack.isEmpty()) {
-            return -1;
-        }
-        return stack.peek();
-    }
+## 8. Complexity
 
-    boolean isEmpty() {
-        return stack.isEmpty();
-    }
+| Operation | Time |
+|---|---:|
+| `push()` | O(1) |
+| `pop()` | O(1) |
+| `peek()` | O(1) |
+| `getMax()` | O(1) |
+| `isEmpty()` | O(1) |
 
-    public int getMax() {
-        if (specialStack.isEmpty()) {
-            return -1;
-        }
-        return specialStack.peek();
-    }
-}
-8. Complexity
-push() → O(1)
-pop() → O(1)
-peek() → O(1)
-getMax() → O(1)
-isEmpty() → O(1)
-Extra Space → O(n)
-9. Interview Explanation
+**Extra Space:** O(n)
 
-"I use two synchronized stacks. The normal stack stores the actual values, while the special stack stores the maximum value at every level. Therefore, the current maximum is always at specialStack.peek(), giving O(1) getMax()."
+---
 
-10. Key Learning / Pattern
+## 9. Interview Explanation
 
-Augment a data structure with an auxiliary structure to answer an extra query in O(1).
+I use two synchronized stacks. The normal stack stores the actual values, while the special stack stores the maximum at every level.
 
-Pattern:
+Therefore, `specialStack.peek()` always gives the current maximum in **O(1)**.
 
-Normal Stack + Auxiliary Stack
-        ↓
-Store extra information at every level
-        ↓
-O(1) retrieval of required information
+---
 
-This is the Max Stack version of the Min Stack pattern.
+## 10. Key Learning / Pattern
 
-11. My Mistakes While Solving
-Initially wrote new stack<>() instead of new Stack<>().
-Initially checked stack.isEmpty() instead of specialStack.isEmpty() inside push().
-Initially used the Min Stack comparison direction (x < current) without understanding the Max Stack requirement.
-Accidentally pushed into the main stack twice.
-Placed empty checks outside peek() and getMax().
-Put return before the empty check, creating unreachable code.
-Forgot () in stack.isEmpty().
-Learned that specialStack must maintain one value for every level of the main stack.
-12. Similar Questions — Same Exact Pattern / Design
-Min Stack — LeetCode #155 → auxiliary stack stores minimum at every level.
-Max Stack — LeetCode #716 → supports maximum retrieval/removal using augmented stack design.
-Maximum Frequency Stack — LeetCode #895 → maintains additional state to support a special retrieval operation.
-Design a Stack With Increment Operation — LeetCode #1381 → stack design with additional state/operations.
-Quick Takeaway
-stack        → actual values
-specialStack → maximum at each level
+### Auxiliary Stack Pattern
 
-getMax() → specialStack.peek() → O(1)
+When a stack needs extra information in **O(1)**, maintain another stack to store that information.
+
+**Normal Stack + Auxiliary Stack → O(1) extra query**
+
+For this problem:
+
+- `stack` → actual values
+- `specialStack` → maximum at every level
+
+### Recognition Trick
+
+If the question says:
+
+**"Get maximum from stack in O(1)"**
+
+Think:
+
+**Two Stacks → Normal Stack + Max Stack**
+
+If the question says:
+
+**"Get minimum from stack in O(1)"**
+
+Think:
+
+**Two Stacks → Normal Stack + Min Stack**
+
+---
+
+## 11. My Mistakes While Solving
+
+- Used `new stack<>()` instead of `new Stack<>()`.
+- Initially checked `stack.isEmpty()` instead of `specialStack.isEmpty()` inside `push()`.
+- Initially used the Min Stack comparison without thinking about the Max Stack requirement.
+- Accidentally pushed into the main stack twice.
+- Placed empty checks outside `peek()` and `getMax()`.
+- Put `return` before the empty check, creating unreachable code.
+- Forgot `()` in `stack.isEmpty()`.
+- Learned that `specialStack` must maintain one value for every level of the main stack.
+
+---
+
+## 12. Similar Questions — Same Exact Pattern / Design
+
+### Min Stack — LeetCode #155
+
+Same exact auxiliary-stack design.
+
+`Normal Stack + Min Stack`
+
+Instead of storing the maximum at every level, store the minimum.
+
+### Max Stack — LeetCode #716
+
+Related maximum-tracking stack design with additional operations.
+
+---
+
+# Quick Revision 🧠
+
+### Question
+
+**Get MAX from Stack in O(1)**
+
+### Think
+
+**Two Stacks**
+
+### Structure
+
+- `stack` → actual values
+- `specialStack` → maximum at every level
+
+### Operations
+
+- `push(x)` → push value + update max stack
+- `pop()` → pop from both
+- `peek()` → `stack.peek()`
+- `getMax()` → `specialStack.peek()`
+- `isEmpty()` → `stack.isEmpty()`
+
+### One-Line Memory
+
+**Main stack stores values; special stack remembers the maximum at each level.**
+
+### Pattern
+
+**Need extra information from a stack in O(1)? Think about an auxiliary stack.**
