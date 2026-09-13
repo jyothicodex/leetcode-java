@@ -1,430 +1,313 @@
-# 🔢 Bit Manipulation — Day 2: Check a Bit
-
-## 📌 Goal
-
-Learn how to check whether the `i`th bit of a number is **SET (`1`) or NOT SET (`0`)**.
-
-This is the first useful Bit Manipulation operation that we can directly use in DSA problems.
+# Bit Manipulation — Clear & Toggle i-th Bit
 
 ---
 
-# 1. 🧠 What is SET?
+# 1. Clear i-th Bit
 
-A bit can be:
+## Problem
 
-```text
-1 → SET
-0 → NOT SET
+Given an integer `n` and a bit position `i`, make the **i-th bit equal to 0**.
 
-Example:
+If the bit is already `0`, it remains `0`.
 
-13 = 1101
+## Main Challenge
 
-Position:  3  2  1  0
-Bit:       1  1  0  1
+Change only the i-th bit to `0` without changing any other bits.
 
-Therefore:
+## Brute Force Approach
 
-bit 3 → SET
-bit 2 → SET
-bit 1 → NOT SET
-bit 0 → SET
-2. ❓ Why Do We Need to Check a Bit?
+Convert the number to binary, change the i-th bit to `0`, and convert it back.
 
-A DSA question may ask:
+- Time: `O(log n)`
+- Space: `O(1)`
 
-"Check whether the ith bit is SET."
+## Optimal Approach / Intuition
 
-For example:
+Create a mask with `1` at position `i`:
 
-n = 13
-i = 2
+`1 << i`
 
-We need to find:
+We need to make that bit `0`.
 
-Is bit 2 = 1 or 0?
+First invert the mask using NOT:
 
-For small numbers, we can convert to binary and directly see it.
+`~(1 << i)`
 
-But in programming, we use bitwise operations to check it efficiently.
+Now the mask has:
 
-3. 🔹 AND &
+- `0` at position `i`
+- `1` at all other positions
 
-AND compares two bits.
+Then use AND:
 
-0 & 0 = 0
-0 & 1 = 0
-1 & 0 = 0
-1 & 1 = 1
-🧠 Remember
+`n & ~(1 << i)`
 
-AND gives 1 only when both bits are 1.
+AND keeps other bits unchanged and forces the i-th bit to `0`.
 
-4. 🎯 What is a Mask?
+## Pattern
 
-A mask is a number used to target a particular bit.
+`n & ~(1 << i)`
 
-Suppose:
+## Algorithm
 
-i = 2
+1. Create mask: `1 << i`
+2. Invert the mask: `~(1 << i)`
+3. Perform AND with `n`.
+4. The i-th bit becomes `0`.
+5. All other bits remain unchanged.
 
-We want:
+## Pseudocode
 
-Position:  3  2  1  0
-Mask:      0  1  0  0
-              ↑
-           target
+mask = 1 << i
 
-So our mask is:
+n = n & ~mask
 
-0100
+return n
 
-The mask has:
+## Java Code
 
-1 → at the position we want to check
-0 → everywhere else
-5. 🧩 How to Create the Mask?
-
-We use:
-
-1 << i
-
-From Day 1:
-
-1 << i = 2ⁱ
-
-Example:
-
-i = 2
-
-1 << 2
-= 2²
-= 4
-= 0100
-
-Therefore:
-
-1 << 2 → 0100
-
-The 1 is at position 2.
-
-6. ⭐ Check Bit Formula
-
-Now combine the number, mask and AND:
-
-n & (1 << i)
-
-Meaning:
-
-        1 << i
-           ↓
-       Create mask
-           ↓
-      n & mask
-           ↓
-      Check bit i
-7. 🔍 Example — Bit is SET
-n = 13
-i = 2
-Step 1: Number
-13 = 1101
-Step 2: Mask
-1 << 2 = 0100
-Step 3: AND
-  1101
-& 0100
-------
-  0100
-
-Result:
-
-0100 ≠ 0
-
-Therefore:
-
-bit 2 → SET
-8. 🔍 Example — Bit is NOT SET
-n = 9
-i = 2
-Step 1: Number
-9 = 1001
-Step 2: Mask
-1 << 2 = 0100
-Step 3: AND
-  1001
-& 0100
-------
-  0000
-
-Result:
-
-0000 = 0
-
-Therefore:
-
-bit 2 → NOT SET
-9. 🧠 Why Does AND Work?
-
-The mask has 1 only at the position we want.
-
-Example:
-
-Number:  1 1 0 1
-Mask:    0 1 0 0
-            ↑
-         check here
-
-At the target position:
-
-If number has 1
-1 & 1 = 1
-
-Result is non-zero:
-
-→ SET
-If number has 0
-0 & 1 = 0
-
-Result is zero:
-
-→ NOT SET
-
-So AND lets us check only the bit we are interested in.
-
-10. 💻 Java Code
 int n = 13;
 int i = 2;
 
-if ((n & (1 << i)) != 0) {
-    System.out.println("SET");
-} else {
-    System.out.println("NOT SET");
-}
+int result = n & ~(1 << i);
 
-Output:
+System.out.println(result);
 
-SET
-11. ❓ Why != 0?
+## Example
 
-The expression:
+`n = 13`
 
-n & (1 << i)
+Binary:
 
-can give:
+`13 = 1101`
 
-0
+Clear bit `2`.
 
-or a non-zero value such as:
+Mask:
 
-1
-2
-4
-8
-16
-...
+`1 << 2 = 0100`
 
-We only care whether the result is zero or not.
+Invert:
 
-0        → NOT SET
-non-zero → SET
-
-Therefore:
-
-(n & (1 << i)) != 0
-
-means:
-
-"Is the ith bit SET?"
-
-12. 📝 Practice Question 1
-Question
-n = 13
-i = 2
-
-Find whether bit 2 is SET.
-
-Solution
-13 = 1101
-
-1 << 2 = 0100
+`~0100 = 1011`
 
 Now:
 
-  1101
-& 0100
-------
-  0100
+`1101`
+`1011`
+`----`
+`1001`
 
-Result is non-zero.
+`1001 = 9`
 
-Answer
-bit 2 → SET
-13. 📝 Practice Question 2
-Question
-n = 10
-i = 3
-Solution
-10 = 1010
+Therefore:
 
-1 << 3 = 1000
+`13 → 9`
 
-AND:
+Bit `2` is now `0`.
 
-  1010
-& 1000
-------
-  1000
+## Complexity
 
-Result is non-zero.
+- Time: `O(1)`
+- Space: `O(1)`
 
-Answer
-bit 3 → SET
-14. 📝 Practice Question 3
-Question
-n = 10
-i = 1
-Solution
-10 = 1010
+## Interview Explanation
 
-1 << 1 = 0010
+"I create a mask with `1` at the i-th position, invert it using NOT, and AND it with `n`. This forces only the i-th bit to `0`."
 
-AND:
+## Key Learning
 
-  1010
-& 0010
-------
-  0010
+`1 << i` → Create mask
 
-Result is non-zero.
+`~(1 << i)` → Put `0` at i-th bit
 
-Answer
-bit 1 → SET
-15. 📝 Practice Question 4
-Question
-n = 9
-i = 2
-Solution
-9 = 1001
+`n & ~(1 << i)` → **CLEAR i-th bit**
 
-1 << 2 = 0100
 
-AND:
+---
 
-  1001
-& 0100
-------
-  0000
+# 2. Toggle i-th Bit
 
-Result is 0.
+## Problem
 
-Answer
-bit 2 → NOT SET
-16. 🧠 The Pattern to Remember
+Given an integer `n` and a bit position `i`, **flip the i-th bit**.
 
-Whenever the question says:
+- If it is `0` → make it `1`
+- If it is `1` → make it `0`
 
-"Check whether bit i is SET."
+## Main Challenge
 
-Think:
+Change the i-th bit while keeping all other bits unchanged.
 
-Need to check bit i
-        ↓
-Create mask
-        ↓
-1 << i
-        ↓
-AND with n
-        ↓
-n & (1 << i)
-        ↓
-Check result
+## Brute Force Approach
 
-Then:
+Convert the number to binary, flip the i-th bit, and convert it back.
 
-0        → NOT SET
-non-zero → SET
-17. 🔗 Day 1 → Day 2 Connection
-Day 1
+- Time: `O(log n)`
+- Space: `O(1)`
 
-We learned:
+## Optimal Approach / Intuition
 
-Bit position i
-      ↓
-Value = 2ⁱ
-      ↓
-1 << i
-      ↓
-Mask
-Day 2
+Create a mask with `1` at position `i`:
 
-We use that mask:
+`1 << i`
 
-Mask
-  ↓
-AND &
-  ↓
-Check bit
-  ↓
-SET / NOT SET
+Use XOR:
+
+`n ^ (1 << i)`
+
+XOR has the important property:
+
+- `0 ^ 1 = 1`
+- `1 ^ 1 = 0`
+
+So XOR with `1` **flips the bit**.
+
+For all other positions, the mask contains `0`.
+
+And:
+
+- `0 ^ 0 = 0`
+- `1 ^ 0 = 1`
+
+Therefore, all other bits remain unchanged.
+
+## Pattern
+
+`n ^ (1 << i)`
+
+## Algorithm
+
+1. Create mask: `1 << i`
+2. Perform XOR between `n` and the mask.
+3. The i-th bit is flipped.
+4. All other bits remain unchanged.
+
+## Pseudocode
+
+mask = 1 << i
+
+n = n ^ mask
+
+return n
+
+## Java Code
+
+int n = 13;
+int i = 2;
+
+int result = n ^ (1 << i);
+
+System.out.println(result);
+
+## Example 1 — Toggle 1 to 0
+
+`n = 13`
+
+Binary:
+
+`13 = 1101`
+
+Toggle bit `2`.
+
+Mask:
+
+`1 << 2 = 0100`
+
+Now:
+
+`1101`
+`0100`
+`----`
+`1001`
+
+`1001 = 9`
 
 So:
 
-Day 1 → Create the mask
-Day 2 → Use the mask
-18. 🎯 How This Helps in DSA
+`13 → 9`
 
-Checking bits is the foundation for many Bit Manipulation problems.
+Bit `2`: `1 → 0`
 
-Later we will use the same idea for:
+## Example 2 — Toggle 0 to 1
 
-Check a bit
-    ↓
-Set a bit
-    ↓
-Clear a bit
-    ↓
-Toggle a bit
-    ↓
-Count set bits
-    ↓
-Check power of 2
-    ↓
-XOR problems
-    ↓
-Bitmasking
-    ↓
-LeetCode / OA questions
+`n = 9`
 
-The goal is to recognize the pattern when you see a question involving bits, positions, masks, or binary representation.
+Binary:
 
-⭐ Day 2 Quick Revision
-SET       → 1
-NOT SET   → 0
+`9 = 1001`
 
-&         → AND
+Toggle bit `1`.
 
-1 << i    → mask for position i
+Mask:
 
-n & (1 << i)
-          → check bit i
+`1 << 1 = 0010`
 
-Result = 0
-          → NOT SET
+Now:
 
-Result ≠ 0
-          → SET
-🧠 One Example to Remember
-n = 13
-i = 2
+`1001`
+`0010`
+`----`
+`1011`
 
-13      = 1101
-1 << 2  = 0100
+`1011 = 11`
 
-1101
-0100
-----
-0100
+So:
 
-0100 ≠ 0000
-      ↓
-bit 2 is SET
+`9 → 11`
+
+Bit `1`: `0 → 1`
+
+## Complexity
+
+- Time: `O(1)`
+- Space: `O(1)`
+
+## Interview Explanation
+
+"I create a mask using `1 << i` and XOR it with `n`. XOR with `1` flips the i-th bit, while XOR with `0` keeps all other bits unchanged."
+
+## Key Learning
+
+`1 << i` → Create mask
+
+`n ^ (1 << i)` → **TOGGLE i-th bit**
+
+
+---
+
+# Quick Pattern Summary
+
+| Operation | Operator | Pattern | Purpose |
+|---|---|---|---|
+| Check i-th bit | AND `&` | `n & (1 << i)` | Check bit |
+| Set i-th bit | OR `|` | `n \| (1 << i)` | Make bit `1` |
+| Clear i-th bit | AND + NOT | `n & ~(1 << i)` | Make bit `0` |
+| Toggle i-th bit | XOR `^` | `n ^ (1 << i)` | Flip bit |
+
+## Operator Memory
+
+`&` → **BOTH must be 1**
+
+`|` → **ANY one can make it 1**
+
+`~` → **FLIP all bits**
+
+`^` → **DIFFERENT = 1 / Same = 0**
+
+## Final 4 Patterns
+
+`1 << i`  
+→ Mask for i-th bit
+
+`n & (1 << i)`  
+→ **CHECK**
+
+`n | (1 << i)`  
+→ **SET**
+
+`n & ~(1 << i)`  
+→ **CLEAR**
+
+`n ^ (1 << i)`  
+→ **TOGGLE**
